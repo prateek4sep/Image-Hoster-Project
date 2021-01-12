@@ -46,10 +46,10 @@ public class ImageController {
     //Here a list of tags is added in the Model type object
     //this list is then sent to 'images/image.html' file and the tags are displayed
 
-    //BUG FIX: Changed {title} to {id}, removed title since it was causing a bug when a duplicate title is used,
-    //Also, ID being a primary key is better to perform such queries, 'title' isn't needed here.
-    @RequestMapping("/images/{id}")
-    public String showImage(@PathVariable("id") Integer id, Model model) {
+    //BUG FIX: Added {id}, removed title since {title} it was causing a bug when a duplicate title is used,
+    //Also, ID being a primary key is better to perform such queries.
+    @RequestMapping("/images/{id}/{title}")
+    public String showImage(@PathVariable("title") String title, @PathVariable("id") Integer id, Model model) {
         Image image = imageService.getImage(id);
         model.addAttribute("image", image);
         model.addAttribute("tags", image.getTags());

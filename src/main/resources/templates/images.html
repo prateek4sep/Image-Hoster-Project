@@ -18,8 +18,8 @@
         </div>
 
         <!--Change <a th:href="'/images/' + ${i.title}"> to <a th:href="'/images/' +${i.id} +'/' +${i.title}">-->
-        <!--BUG FIX: Changed ${i.title} to ${i.id}, removed title since it isn't needed for showing image-->
-        <a th:href="'/images/' + ${i.id}">
+        <!--BUG FIX: Changed ${i.title} to ${i.id} +'/' +${i.title}, ID being primary key is better for such queries-->
+        <a th:href="'/images/' + ${i.id} +'/' +${i.title}">
             <h3 th:text="${i.title}">Title of image</h3>
         </a>
         <i>Posted On: </i> <span th:text="${i.date}"></span>
