@@ -94,14 +94,25 @@ public class ImageController {
 
     //The method first needs to convert the list of all the tags to a string containing all the tags separated by a comma and then add this string in a Model type object
     //This string is then displayed by 'edit.html' file as previous tags of an image
-    @RequestMapping(value = "/editImage")
-    public String editImage(@RequestParam("imageId") Integer imageId, Model model) {
-        Image image = imageService.getImage(imageId);
 
+    //BUG FIX: Blocking Non-Owner from Editing an Image.
+    //The logged-in user would first be validated against the image owner, if matched, the user would be redirected to edit page.
+    //If the user isn't the owner of the image, redirect to the same image page and show the error message.
+    @RequestMapping(value = "/editImage")
+    public String editImage(@RequestParam("imageId") Integer imageId, Model model, HttpSession session) {
+        Image image = imageService.getImage(imageId);
         String tags = convertTagsToString(image.getTags());
+        List<Tag> tag = findOrCreateTags(tags);
         model.addAttribute("image", image);
-        model.addAttribute("tags", tags);
-        return "images/edit";
+
+        if(validateUser(image.getUser(),session)) {
+            model.addAttribute("tags", tags);
+            return "images/edit";
+        } else {
+            model.addAttribute("editError","Only the owner of the image can edit the image");
+            model.addAttribute("tags", tag);
+            return "images/image";
+        }
     }
 
     //This controller method is called when the request pattern is of type 'images/edit' and also the incoming request is of PUT type
@@ -196,6 +207,9 @@ public class ImageController {
         for (int i = 0; i <= tags.size() - 2; i++) {
             tagString.append(tags.get(i).getName()).append(",");
         }
+
+        //Fixed to avoid a scenario where no tags are present
+        if(tags.size()==0) return "";
 
         Tag lastTag = tags.get(tags.size() - 1);
         tagString.append(lastTag.getName());
