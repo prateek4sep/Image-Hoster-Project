@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Controller
@@ -39,10 +41,21 @@ public class UserController {
 
     //This controller method is called when the request pattern is of type 'users/registration' and also the incoming request is of POST type
     //This method calls the business logic and after the user record is persisted in the database, directs to login page
+
+    //NEW FEATURE: Checks whether the entered password is as per the instructions or not.
+    //If yes, then user is created and redirected to login
+    //If not, then the control will remain on the registration page
     @RequestMapping(value = "users/registration", method = RequestMethod.POST)
-    public String registerUser(User user) {
-        userService.registerUser(user);
-        return "redirect:/users/login";
+    public String registerUser(User user, Model model) {
+        Boolean passwordValid = isValidPassword(user.getPassword());
+        if(passwordValid) {
+            userService.registerUser(user);
+            return "users/login";
+        } else {
+            model.addAttribute("User", user);
+            model.addAttribute("passwordTypeError", "Password must contain atleast 1 alphabet, 1 number & 1 special character");
+            return "users/registration";
+        }
     }
 
     //This controller method is called when the request pattern is of type 'users/login'
@@ -78,5 +91,16 @@ public class UserController {
         List<Image> images = imageService.getAllImages();
         model.addAttribute("images", images);
         return "index";
+    }
+
+    /**
+     * Checks whether the entered password contains letter, number as well as a special character.
+     * @param password
+     * @return
+     */
+    public static boolean isValidPassword(String password)
+    {
+        String pattern = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=])(?=\\S+$).{3,}";
+        return password.matches(pattern);
     }
 }
