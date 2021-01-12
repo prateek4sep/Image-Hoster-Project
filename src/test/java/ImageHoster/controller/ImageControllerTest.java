@@ -94,7 +94,7 @@ public class ImageControllerTest {
 
     }
 
-    /*
+
     //This test checks the controller logic when the logged in user sends a GET request to the server to get the form to upload an image in the application and checks whether the logic returns the html file 'images/upload.html'
     @Test
     public void uploadImageWithGetRequest() throws Exception {
@@ -191,6 +191,7 @@ public class ImageControllerTest {
     }
 
 
+/*
     //This test checks the controller logic when non owner of the image sends the GET request to get the form to edit the image and checks whether the Model type object contains the desired attribute with desired value
     @Test
     public void editImageWithNonOwnerOfTheImage() throws Exception {
@@ -233,6 +234,8 @@ public class ImageControllerTest {
                 .session(session))
                 .andExpect(model().attribute("editError", "Only the owner of the image can edit the image"));
     }
+
+    */
 
     //This test checks the controller logic when the owner of the image sends the DELETE request to delete the image and checks whether the logic returns the html file 'images.html'
     @Test
@@ -308,7 +311,6 @@ public class ImageControllerTest {
                 .session(session))
                 .andExpect(model().attribute("deleteError", "Only the owner of the image can delete the image"));
     }
-    */
 }
 
 

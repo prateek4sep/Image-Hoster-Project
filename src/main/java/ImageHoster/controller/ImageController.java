@@ -142,10 +142,22 @@ public class ImageController {
     //This controller method is called when the request pattern is of type 'deleteImage' and also the incoming request is of DELETE type
     //The method calls the deleteImage() method in the business logic passing the id of the image to be deleted
     //Looks for a controller method with request mapping of type '/images'
+
+    //BUG FIX: Blocking Non-Owner from Deleting an Image.
+    //The logged-in user would first be validated against the image owner, if the two users are same the image would be deleted.
+    //If the user isn't the owner of the image, redirect to the same image page and show the error message.
     @RequestMapping(value = "/deleteImage", method = RequestMethod.DELETE)
-    public String deleteImageSubmit(@RequestParam(name = "imageId") Integer imageId) {
-        imageService.deleteImage(imageId);
-        return "redirect:/images";
+    public String deleteImageSubmit(@RequestParam(name = "imageId") Integer imageId, HttpSession session, Model model) {
+        Image image = imageService.getImage(imageId);
+        if(validateUser(image.getUser(),session)) {
+            imageService.deleteImage(imageId);
+            return "redirect:/images";
+        } else {
+            model.addAttribute("deleteError","Only the owner of the image can delete the image");
+            model.addAttribute("image", image);
+            model.addAttribute("tags", image.getTags());
+            return "images/image";
+        }
     }
 
 
@@ -189,5 +201,21 @@ public class ImageController {
         tagString.append(lastTag.getName());
 
         return tagString.toString();
+    }
+
+    /**
+     * This method takes the ImageOwner and the Current session and
+     * validates whether the logged in user is same as the image owner or not.
+     * @param imageOwner
+     * @param session
+     * @return
+     */
+    private Boolean validateUser(User imageOwner, HttpSession session) {
+        User currentUser = (User) session.getAttribute("loggeduser");
+        if (imageOwner.getId() == currentUser.getId()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
