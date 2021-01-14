@@ -30,7 +30,6 @@ public class Image {
     @Column(columnDefinition = "TEXT")
     private String imageFile;
 
-
     @Column(name = "description")
     private String description;
 
