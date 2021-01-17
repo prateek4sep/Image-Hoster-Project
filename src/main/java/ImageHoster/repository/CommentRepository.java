@@ -35,8 +35,8 @@ public class CommentRepository {
     }
 
     //The method creates an instance of EntityManager
-    //Executes JPQL query to fetch all the images from the database
-    //Returns the list of all the images fetched from the database
+    //Executes JPQL query to fetch all the comments for an image from the database
+    //Returns the list of all the comments for an image fetched from the database
     public List<Comment> getAllComments(Integer imageId) {
         EntityManager em = emf.createEntityManager();
         TypedQuery<Comment> query = em.createQuery("SELECT c from Comment c where c.image.id=:imageId", Comment.class).setParameter("imageId", imageId);

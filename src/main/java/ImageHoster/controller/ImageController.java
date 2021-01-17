@@ -53,6 +53,7 @@ public class ImageController {
 
     //BUG FIX: Added {id}, removed title since {title} it was causing a bug when a duplicate title is used,
     //Also, ID being a primary key is better to perform such queries.
+    //NEW FEATURE: Added code to fetch all the comments corresponding to an image.
     @RequestMapping("/images/{id}/{title}")
     public String showImage(@PathVariable("title") String title, @PathVariable("id") Integer id, Model model) {
         Image image = imageService.getImage(id);
@@ -105,6 +106,7 @@ public class ImageController {
     //BUG FIX: Blocking Non-Owner from Editing an Image.
     //The logged-in user would first be validated against the image owner, if matched, the user would be redirected to edit page.
     //If the user isn't the owner of the image, redirect to the same image page and show the error message.
+    //NEW FEATURE: Added code to fetch all the comments corresponding to an image.
     @RequestMapping(value = "/editImage")
     public String editImage(@RequestParam("imageId") Integer imageId, Model model, HttpSession session) {
         Image image = imageService.getImage(imageId);

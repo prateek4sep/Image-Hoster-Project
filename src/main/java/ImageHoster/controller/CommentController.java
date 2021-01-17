@@ -27,7 +27,7 @@ public class CommentController {
     @Autowired
     private ImageService imageService;
 
-    //This method displays all the images in the user home page after successful login
+    // NEW FEATURE: This method returns all the comments for a particular image
     @RequestMapping("comments")
     public String getComments(@PathVariable(name = "imageId") Integer imageId, Model model) {
         List<Comment> comments = commentService.getAllComments(imageId);
@@ -35,6 +35,7 @@ public class CommentController {
         return "comments";
     }
 
+    // NEW FEATURE: This method creates a comment corresponding to the image provided as parameter
     @RequestMapping(value = "/image/{imageId}/{imageTitle}/comments", method = RequestMethod.POST)
     public String createComment(@PathVariable(name = "imageId") Integer imageId, @PathVariable(value = "imageTitle") String title, @RequestParam(value = "comment") String newComment, HttpSession session, Model model) {
         User user = (User) session.getAttribute("loggeduser");

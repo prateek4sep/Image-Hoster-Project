@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
+///NEW FEATURE: Support for comments
+
 //@Entity annotation specifies that the corresponding class is a JPA entity
 @Entity
 //@Table annotation provides more options to customize the mapping.
@@ -34,11 +36,11 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
-    //The 'comments' table is mapped to 'users' table with Many:One mapping
-    //One comment can have only one user (owner) but one user can have multiple comments
+    //The 'comments' table is mapped to 'image' table with Many:One mapping
+    //One comment can have only one image but one image can have multiple comments
     //FetchType is EAGER
     @ManyToOne(fetch = FetchType.EAGER)
-    //Below annotation indicates that the name of the column in 'comments' table referring the primary key in 'users' table will be 'user_id'
+    //Below annotation indicates that the name of the column in 'comments' table referring the primary key in 'image' table will be 'image_id'
     @JoinColumn(name = "image_id")
     private Image image;
 
