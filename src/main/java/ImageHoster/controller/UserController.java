@@ -45,8 +45,7 @@ public class UserController {
     //NEW FEATURE: Checks whether the entered password is as per the instructions or not.
     //If yes, then user is created and redirected to login
     //If not, then the control will remain on the registration page
-    @RequestMapping(value = "users/registration", method = RequestM
-            ethod.POST)
+    @RequestMapping(value = "users/registration", method = RequestMethod.POST)
     public String registerUser(User user, Model model) {
         Boolean passwordValid = isValidPassword(user.getPassword());
         if(passwordValid) {
