@@ -100,7 +100,7 @@ public class UserController {
      */
     public static boolean isValidPassword(String password)
     {
-        String pattern = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=])(?=\\S+$).{3,}";
+        String pattern = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=!~()+])(?=\\S+$).{3,}";
         return password.matches(pattern);
     }
 }
