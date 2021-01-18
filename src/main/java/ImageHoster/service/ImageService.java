@@ -1,6 +1,7 @@
 package ImageHoster.service;
 
 import ImageHoster.model.Image;
+import ImageHoster.repository.CommentRepository;
 import ImageHoster.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,9 @@ import java.util.List;
 public class ImageService {
     @Autowired
     private ImageRepository imageRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     //Call the getAllImages() method in the Repository and obtain a List of all the images in the database
     public List<Image> getAllImages() {
@@ -42,7 +46,9 @@ public class ImageService {
     }
 
     //The method calls the deleteImage() method in the Repository and passes the Image id of the image to be deleted in the database
+    //The comment dependencies are cleared first
     public void deleteImage(Integer imageId) {
+        commentRepository.deleteAllComments(imageId);
         imageRepository.deleteImage(imageId);
     }
 

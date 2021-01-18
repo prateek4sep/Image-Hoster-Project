@@ -25,4 +25,12 @@ public class CommentService {
     public List<Comment> getAllComments(Integer imageId) {
         return commentRepository.getAllComments(imageId);
     }
+
+    // The method creates an instance of EntityManager
+    // BUG FIX: Executes JPQL query to delete all the comments for an image from the database
+    // Otherwise it won't allow to delete the image.
+    // This function removes the dependencies
+    public void deleteAllComments(Integer imageId) {
+        commentRepository.deleteAllComments(imageId);
+    }
 }

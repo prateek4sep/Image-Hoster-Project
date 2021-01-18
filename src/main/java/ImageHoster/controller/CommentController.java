@@ -45,4 +45,11 @@ public class CommentController {
         return "redirect:/images/" + image.getId() + "/" + title;
 
     }
+
+    // BUG FIX: This method deletes all the comments for a particular image before deleting the image.
+    // Otherwise it won't allow to delete the image.
+    // This function removes the dependencies
+    public void deleteComments(@PathVariable(name = "imageId") Integer imageId, Model model) {
+        commentService.deleteAllComments(imageId);
+    }
 }
